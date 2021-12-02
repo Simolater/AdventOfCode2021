@@ -3,4 +3,4 @@ project(AdventOfCode)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(AdventOfCode main.cpp)
+add_executable(AdventOfCode main.cpp week_one.h)

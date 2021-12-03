@@ -21,6 +21,9 @@ int main(int argv, char** args) {
         case 2:
             AoC::day2(file);
             break;
+        case 3:
+            AoC::day3(file);
+            break;
         default:
             std::cout << "Invalid day" << std::endl;
             break;

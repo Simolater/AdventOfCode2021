@@ -56,9 +56,9 @@ namespace AoC {
     }
 
     void day3(std::ifstream& file) {
-        // This has to have a cleaner solution
+
         const uint64_t bit_count = 12;
-        uint64_t bits[bit_count * 2] = {0};
+        uint64_t bits[bit_count] = {0};
 
         // needed for b
         std::vector<std::string> lines;
@@ -68,17 +68,16 @@ namespace AoC {
             for (uint64_t i = 0; i < bit_count; ++i) {
                 if (line.at(i) == '0') {
                     ++bits[i];
-                } else {
-                    ++bits[i + bit_count];
                 }
             }
             lines.push_back(line);
         }
+        const auto value_count = lines.size() / 2;
 
         uint64_t gamma = 0;
-        for (uint64_t i = 0; i < bit_count; ++i) {
+        for (auto bit : bits) {
             gamma <<= 1;
-            if (bits[i] > bits[i + bit_count]) {
+            if (bit >= value_count) {
                 ++gamma;
             }
         }
@@ -86,31 +85,36 @@ namespace AoC {
         // Epsilon is just inverted gamma
         uint64_t epsilon = ((1 << bit_count) - 1) - gamma;
 
+        // Just playing with some lambda stuff for fun
+        // This is unreadable ik
+        auto filter_word_func = [](std::vector<std::string>& values, bool leastCommon = false) -> std::string {
+            for (int i = 0; i < bit_count; ++i) {
+                uint64_t zero_count = std::count_if(values.begin(), values.end(), [i](const std::string& value) {return value.at(i) == '0';});
+                char filter = values.size() - zero_count >= zero_count ? '1' : '0';
+                values.erase(std::remove_if(values.begin(), values.end(), [i, leastCommon, filter](const std::string& value) {
+                    return leastCommon ^ (value.at(i) != filter);
+                }), values.end());
+                if (values.size() == 1) return values[0];
+            }
+            return "0";
+        };
 
-        std::string i_oxygen, i_co2, oxygen, co2;
-        // Additional passes for b
-        for (int i = 0; i < bit_count; ++i) {
-            if (bits[i] <= bits[i + bit_count]) {
-                i_oxygen.append("1");
-                i_co2.append("0");
-            } else {
-                i_oxygen.append("0");
-                i_co2.append("1");
+        // This lambda converts binary string into unsigned int
+        auto btoi = [](const std::string& bin) -> uint64_t {
+            uint64_t val = 0;
+            for (const char &c : bin) {
+                val <<= 1;
+                if (c == '1') ++val;
             }
-            if (std::count_if(lines.cbegin(), lines.cend(), [&i_co2](const std::string& s) {return s.starts_with(i_co2);}) == 1) {
-                co2 = std::find_if(lines.cbegin(), lines.cend(), [&i_co2](const std::string& s) {return s.starts_with(i_co2);})[0];
-            }
-            if (std::count_if(lines.cbegin(), lines.cend(), [&i_oxygen](const std::string& s) {return s.starts_with(i_oxygen);}) == 1) {
-                oxygen = std::find_if(lines.cbegin(), lines.cend(), [&i_oxygen](const std::string& s) {return s.starts_with(i_oxygen);})[0];
-            }
-        }
+            return val;
+        };
+
+        auto lines_copy(lines);
+        auto oxygen = btoi(filter_word_func(lines_copy));
+        auto co2 = btoi(filter_word_func(lines, true));
 
         std::cout << "------------Day 03------------" << std::endl;
         std::cout << "Gamma: " << gamma << " Epsilon: " << epsilon << " Gamma*Epsilon: " << gamma * epsilon << std::endl;
-
-        std::cout << "Oxygen: " << oxygen << " Co2: " << co2 << std::endl;
-        for (auto bit : bits) {
-            std::cout << bit << " ";
-        }
+        std::cout << "Oxygen: " << oxygen << " CO2: " << co2 << " Oxygen*CO2: " << oxygen * co2 << std::endl;
     }
 }

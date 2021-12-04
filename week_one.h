@@ -57,15 +57,15 @@ namespace AoC {
 
     void day3(std::ifstream& file) {
 
-        const uint64_t bit_count = 12;
-        uint64_t bits[bit_count] = {0};
+        constexpr uint64_t c_bit_count = 12;
+        uint64_t bits[c_bit_count] = {0};
 
         // needed for b
         std::vector<std::string> lines;
 
         std::string line;
         while(std::getline(file, line)) {
-            for (uint64_t i = 0; i < bit_count; ++i) {
+            for (uint64_t i = 0; i < c_bit_count; ++i) {
                 if (line.at(i) == '0') {
                     ++bits[i];
                 }
@@ -83,12 +83,12 @@ namespace AoC {
         }
 
         // Epsilon is just inverted gamma
-        uint64_t epsilon = ((1 << bit_count) - 1) - gamma;
+        uint64_t epsilon = ((1 << c_bit_count) - 1) - gamma;
 
         // Just playing with some lambda stuff for fun
         // This is unreadable ik
-        auto filter_word_func = [](std::vector<std::string>& values, bool leastCommon = false) -> std::string {
-            for (int i = 0; i < bit_count; ++i) {
+        auto filterWordFunc = [](std::vector<std::string>& values, bool leastCommon = false) -> std::string {
+            for (int i = 0; i < c_bit_count; ++i) {
                 uint64_t zero_count = std::count_if(values.begin(), values.end(), [i](const std::string& value) {return value.at(i) == '0';});
                 char filter = values.size() - zero_count >= zero_count ? '1' : '0';
                 values.erase(std::remove_if(values.begin(), values.end(), [i, leastCommon, filter](const std::string& value) {
@@ -109,12 +109,107 @@ namespace AoC {
             return val;
         };
 
-        auto lines_copy(lines);
-        auto oxygen = btoi(filter_word_func(lines_copy));
-        auto co2 = btoi(filter_word_func(lines, true));
+        auto linesCopy(lines);
+        auto oxygen = btoi(filterWordFunc(linesCopy));
+        auto co2 = btoi(filterWordFunc(lines, true));
 
         std::cout << "------------Day 03------------" << std::endl;
         std::cout << "Gamma: " << gamma << " Epsilon: " << epsilon << " Gamma*Epsilon: " << gamma * epsilon << std::endl;
         std::cout << "Oxygen: " << oxygen << " CO2: " << co2 << " Oxygen*CO2: " << oxygen * co2 << std::endl;
+    }
+
+    void day4(std::ifstream& file) {
+        std::cout << "------------Day 04------------" << std::endl;
+        constexpr int bingoSize = 5;
+        struct Board {
+            uint64_t numbers[25] = {0};
+            bool marked[25] = {false};
+
+            bool hasBingo() {
+                // horizontal
+                for (int i = 0; i < 25; i += 5) {
+                    if (marked[i] && marked[i + 1] && marked[i + 2] && marked[i + 3] && marked[i + 4]) return true;
+                }
+                // vertical
+                for (int i = 0; i < 5; ++i) {
+                    if (marked[i] && marked[i + 5] && marked[i + 10] && marked[i + 15] && marked[i + 20]) return true;
+                }
+                return false;
+            }
+
+            uint64_t sumUnmarked() {
+                uint64_t sum = 0;
+                for (int i = 0; i < 25; ++i) {
+                    if (!marked[i]) sum += numbers[i];
+                }
+                return sum;
+            }
+        };
+
+        std::string drawnNumbersStr;
+        if (!std::getline(file, drawnNumbersStr)) return;
+        std::stringstream drawnNumbers(drawnNumbersStr);
+
+        // Parse boards
+        std::vector<Board> boards;
+        std::string input;
+        while (std::getline(file, input)) {
+            if (!input.empty()) {
+                std::cout << "invalid input format!" << std::endl;
+                return;
+            }
+            Board board;
+            for (auto i = 0; i < 5; ++i) {
+                if (!std::getline(file, input)) {
+                    std::cout << "invalid input format!" << std::endl;
+                    return;
+                }
+                std::stringstream values(input);
+                std::string number;
+                for (auto j = 0; j < 5; ++j) {
+                    do {
+                        if (!std::getline(values, number, ' ')) {
+                            std::cout << "invalid input format!" << std::endl;
+                            return;
+                        }
+                    } while (number.empty());
+                    board.numbers[i * 5 + j] = std::stoi(number);
+                }
+            }
+            boards.push_back(board);
+        }
+
+        bool firstWin = true;
+        uint64_t latestWinScore = 0;
+        // Evaluate boards
+        while (std::getline(drawnNumbers, input, ',')) {
+            int value = std::stoi(input);
+            // Mark boards
+            for (auto board_it = boards.begin(); board_it != boards.end();) {
+                // marks if board won in this round
+                bool won = false;
+                for (int i = 0; i < 25; ++i) {
+                    if (board_it->numbers[i] == value) {
+                        // Mark and check for bingo
+                        board_it->marked[i] = true;
+                        if (board_it->hasBingo()) {
+                            latestWinScore = board_it->sumUnmarked() * value;
+                            if (firstWin) {
+                                std::cout << "First winning board has the final score: " << latestWinScore << std::endl;
+                                firstWin = false;
+                            }
+                            won = true;
+                            break;
+                        }
+                    }
+                }
+                if (won) {
+                    board_it = boards.erase(board_it);
+                } else {
+                    ++board_it;
+                }
+            }
+        }
+        std::cout << "Last winning board has the final score: " << latestWinScore << std::endl;
     }
 }

@@ -4,6 +4,7 @@
 #include <vector>
 #include <ranges>
 #include <algorithm>
+#include <unordered_map>
 
 namespace AoC {
     void day1(std::ifstream& file) {
@@ -120,7 +121,6 @@ namespace AoC {
 
     void day4(std::ifstream& file) {
         std::cout << "------------Day 04------------" << std::endl;
-        constexpr int bingoSize = 5;
         struct Board {
             uint64_t numbers[25] = {0};
             bool marked[25] = {false};
@@ -211,5 +211,85 @@ namespace AoC {
             }
         }
         std::cout << "Last winning board has the final score: " << latestWinScore << std::endl;
+    }
+
+    void day5(std::ifstream& file) {
+        std::cout << "------------Day 05------------" << std::endl;
+
+        using coord_t = uint32_t;
+
+        // Stores the count with and without diagonals
+        struct Cell {
+            uint32_t countA;
+            uint32_t countB; // includes diagonals
+
+            Cell operator+= (const Cell& other) {
+                countA += other.countA;
+                countB += other.countB;
+                return *this;
+            }
+        };
+
+        struct pair_hash
+        {
+            std::size_t operator() (const std::pair<coord_t, coord_t> &pair) const {
+                return std::hash<coord_t>()(pair.first) ^ std::hash<coord_t>()(pair.second);
+            }
+        };
+        std::unordered_map<std::pair<coord_t , coord_t>, Cell, pair_hash> map;
+
+        std::string input;
+        while (std::getline(file, input)) {
+            int x1, x2, y1, y2;
+            std::stringstream inputStream(input);
+            std::string value;
+            if (!std::getline(inputStream, value, ',')) return;
+            x1 = std::stoi(value);
+            if (!std::getline(inputStream, value, ' ')) return;
+            y1 = std::stoi(value);
+            inputStream.ignore(3);
+            if (!std::getline(inputStream, value, ',')) return;
+            x2 = std::stoi(value);
+            if (!std::getline(inputStream, value, ' ')) return;
+            y2 = std::stoi(value);
+
+            Cell offset = {x1 == x2 || y1 == y2, 1};
+            {
+                auto pos = std::make_pair(x1, y1);
+                if (map.contains(pos)) {
+                    map[pos] += offset;
+                } else {
+                    map[pos] = offset;
+                }
+            }
+            while (x1 != x2 || y1 != y2) {
+                auto xDiff = x2 - x1;
+                if (xDiff < 0) {
+                    --x1;
+                } else if (xDiff > 0) {
+                    ++x1;
+                }
+                auto yDiff = y2 - y1;
+                if (yDiff < 0) {
+                    --y1;
+                } else if (yDiff > 0) {
+                    ++y1;
+                }
+                auto pos = std::make_pair(x1, y1);
+                if (map.contains(pos)) {
+                    map[pos] += offset;
+                } else {
+                    map[pos] = offset;
+                }
+            }
+        }
+
+        uint64_t countA = 0, countB = 0;
+        for (auto value : map) {
+            if (value.second.countA > 1) ++countA;
+            if (value.second.countB > 1) ++countB;
+        }
+
+        std::cout << "Count: " << countA << " With diagonals: " << countB << std::endl;
     }
 }

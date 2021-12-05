@@ -220,12 +220,12 @@ namespace AoC {
 
         // Stores the count with and without diagonals
         struct Cell {
-            uint32_t countA;
-            uint32_t countB; // includes diagonals
+            uint32_t countNonDiagonal;
+            uint32_t count;
 
             Cell operator+= (const Cell& other) {
-                countA += other.countA;
-                countB += other.countB;
+                countNonDiagonal += other.countNonDiagonal;
+                count += other.count;
                 return *this;
             }
         };
@@ -247,14 +247,18 @@ namespace AoC {
             x1 = std::stoi(value);
             if (!std::getline(inputStream, value, ' ')) return;
             y1 = std::stoi(value);
+            // Skip "-> "
             inputStream.ignore(3);
             if (!std::getline(inputStream, value, ',')) return;
             x2 = std::stoi(value);
             if (!std::getline(inputStream, value, ' ')) return;
             y2 = std::stoi(value);
 
+            // Only increase non-diagonal count when it's a straight line
             Cell offset = {x1 == x2 || y1 == y2, 1};
-            {
+
+            // Write initial pos
+            { // in scope so I can use pos again later
                 auto pos = std::make_pair(x1, y1);
                 if (map.contains(pos)) {
                     map[pos] += offset;
@@ -262,6 +266,7 @@ namespace AoC {
                     map[pos] = offset;
                 }
             }
+            // Write steps of the line
             while (x1 != x2 || y1 != y2) {
                 auto xDiff = x2 - x1;
                 if (xDiff < 0) {
@@ -284,12 +289,12 @@ namespace AoC {
             }
         }
 
-        uint64_t countA = 0, countB = 0;
+        uint64_t countNonDiagonal = 0, count = 0;
         for (auto value : map) {
-            if (value.second.countA > 1) ++countA;
-            if (value.second.countB > 1) ++countB;
+            if (value.second.countNonDiagonal > 1) ++countNonDiagonal;
+            if (value.second.count > 1) ++count;
         }
 
-        std::cout << "Count: " << countA << " With diagonals: " << countB << std::endl;
+        std::cout << "Count: " << countNonDiagonal << " With diagonals: " << count << std::endl;
     }
 }

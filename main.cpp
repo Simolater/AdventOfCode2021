@@ -30,6 +30,9 @@ int main(int argv, char** args) {
         case 5:
             AoC::day5(file);
             break;
+        case 6:
+            AoC::day6(file);
+            break;
         default:
             std::cout << "Invalid day" << std::endl;
             break;

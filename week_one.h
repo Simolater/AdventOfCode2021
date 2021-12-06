@@ -5,6 +5,7 @@
 #include <ranges>
 #include <algorithm>
 #include <unordered_map>
+#include <numeric>
 
 namespace AoC {
     void day1(std::ifstream& file) {
@@ -296,5 +297,37 @@ namespace AoC {
         }
 
         std::cout << "Count: " << countNonDiagonal << " With diagonals: " << count << std::endl;
+    }
+
+    void day6(std::ifstream& file) {
+        std::cout << "------------Day 06------------" << std::endl;
+
+        constexpr uint64_t c_simulatedDays = 256;
+
+        uint64_t state[9] = {0};
+
+        // Parse state
+        std::string input;
+        while (std::getline(file, input, ',')) {
+            ++state[std::stoi(input)];
+        }
+
+        uint64_t countAt80 = 0;
+        for (auto i = 0; i < c_simulatedDays; ++i) {
+            auto newFish = state[0];
+            for (auto j = 0; j < 8; ++j) {
+                state[j] = state[j + 1];
+            }
+            state[8] = newFish;
+            state[6] += newFish;
+
+            if (i == 79) countAt80 = std::accumulate(state, state + 9, countAt80);
+        }
+        uint64_t countAtEnd = 0;
+        countAtEnd = std::accumulate(state, state + 9, countAtEnd);
+
+        std::cout << "Amount of fish: " << std::endl;
+        std::cout << "After 80 days: " << countAt80 << std::endl;
+        std::cout << "After " << c_simulatedDays <<" days: " << countAtEnd << std::endl;
     }
 }

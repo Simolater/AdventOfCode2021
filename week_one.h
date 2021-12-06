@@ -299,7 +299,7 @@ namespace AoC {
         std::cout << "Count: " << countNonDiagonal << " With diagonals: " << count << std::endl;
     }
 
-    void day6(std::ifstream& file) {
+    void day6_old(std::ifstream& file) {
         std::cout << "------------Day 06------------" << std::endl;
 
         constexpr uint64_t c_simulatedDays = 256;

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include "week_one.h"
+#include "Day6.h"
 
 int main(int argv, char** args) {
     if (argv != 3) {

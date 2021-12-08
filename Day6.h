@@ -61,10 +61,24 @@ namespace AoC {
         static constexpr auto value{Population<N - 1>::value * PopulationBase::value};
     };
 
+    template<int N>
+    requires((N & 3) == 0)
+    struct Population<N> {
+        static constexpr auto value{Population<N / 4>::value * Population<N / 4>::value * Population<N / 4>::value * Population<N / 4>::value};
+    };
+
+    template<int N>
+    requires(!(N & 1) && (N & 3) != 0)
+    struct Population<N> {
+        static constexpr auto value{Population<N / 2>::value * Population<N / 2>::value};
+    };
+
     template<>
     struct Population<1> {
         static constexpr auto value{PopulationBase::value};
     };
+
+
 
     void day6(std::ifstream& file) {
         std::cout << "------------Day 06------------" << std::endl;
@@ -76,7 +90,7 @@ namespace AoC {
         }
 
         constexpr auto mat_80 = Population<80>::value;
-        constexpr auto mat_256 = Population<256>::value;
+        constexpr auto mat_256 = Population<100000000000000000>::value;
 
         std::cout << "Amount of fish: " << std::endl;
         std::cout << "After  80 days: " << (input * mat_80).sum() << std::endl;

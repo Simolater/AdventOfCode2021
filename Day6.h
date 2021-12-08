@@ -90,7 +90,7 @@ namespace AoC {
         }
 
         constexpr auto mat_80 = Population<80>::value;
-        constexpr auto mat_256 = Population<100000000000000000>::value;
+        constexpr auto mat_256 = Population<256>::value;
 
         std::cout << "Amount of fish: " << std::endl;
         std::cout << "After  80 days: " << (input * mat_80).sum() << std::endl;

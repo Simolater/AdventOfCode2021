@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <ranges>
 #include <algorithm>
 #include <unordered_map>
 #include <numeric>
@@ -340,6 +339,14 @@ namespace AoC {
         while (std::getline(file, input, ',')) {
             crabs.push_back(std::stoi(input));
         }
+
+        int64_t mean = 0, size = crabs.size();
+        mean = std::accumulate(crabs.cbegin(), crabs.cend(), mean) / size;
+        int64_t counti = std::count_if(crabs.cbegin(), crabs.cend(), [mean](const auto& val) {return val < mean;});
+
+        int64_t part1 = (size - 2 * counti);
+        int64_t point = part1 / (2*size);
+        std::cout << mean << " " << counti << "/" << crabs.size() << " " << point << " " << part1 << std::endl;
 
         int64_t lowestCost = std::numeric_limits<int64_t>::max(), at = 0;
         int64_t lowestCostB = std::numeric_limits<int64_t>::max(), atB = 0;

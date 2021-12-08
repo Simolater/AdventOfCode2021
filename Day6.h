@@ -62,13 +62,7 @@ namespace AoC {
     };
 
     template<int N>
-    requires((N & 3) == 0)
-    struct Population<N> {
-        static constexpr auto value{Population<N / 4>::value * Population<N / 4>::value * Population<N / 4>::value * Population<N / 4>::value};
-    };
-
-    template<int N>
-    requires(!(N & 1) && (N & 3) != 0)
+    requires(!(N & 1))
     struct Population<N> {
         static constexpr auto value{Population<N / 2>::value * Population<N / 2>::value};
     };

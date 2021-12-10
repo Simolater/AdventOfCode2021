@@ -3,6 +3,8 @@
 #include <string>
 #include "week_one.h"
 #include "Day6.h"
+#include "Day8.h"
+#include "Day9.h"
 
 int main(int argv, char** args) {
     if (argv != 3) {
@@ -15,7 +17,10 @@ int main(int argv, char** args) {
         return 2;
     }
     // This could be unsafe but idc
-    switch (std::stoi(args[2])) {
+
+    const auto day = std::stoi(args[2]);
+    std::cout << "------------Day "<< day <<"------------" << std::endl;
+    switch (day) {
         case 1:
             AoC::day1(file);
             break;
@@ -36,6 +41,12 @@ int main(int argv, char** args) {
             break;
         case 7:
             AoC::day7(file);
+            break;
+        case 8:
+            AoC::day8(file);
+            break;
+        case 9:
+            AoC::day9(file);
             break;
         default:
             std::cout << "Invalid day" << std::endl;

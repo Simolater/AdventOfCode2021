@@ -29,7 +29,6 @@ namespace AoC {
             }
         }
 
-        std::cout << "------------Day 01------------" << std::endl;
         std::cout << "Increases: " << basic_count << " Sliding: " << sliding_count << std::endl << std::endl;
     }
 
@@ -50,7 +49,6 @@ namespace AoC {
                 aim -= value;
             }
         }
-        std::cout << "------------Day 02------------" << std::endl;
         std::cout << "Depth: " << depth << " Pos: " << pos << " Depth*Pos: " << depth * pos << std::endl;
         std::cout << "With aim:" << std::endl;
         std::cout << "Depth: " << aimed_depth << " Pos: " << pos << " Depth*Pos: " << aimed_depth * pos << std::endl << std::endl;
@@ -114,13 +112,11 @@ namespace AoC {
         auto oxygen = btoi(filterWordFunc(linesCopy));
         auto co2 = btoi(filterWordFunc(lines, true));
 
-        std::cout << "------------Day 03------------" << std::endl;
         std::cout << "Gamma: " << gamma << " Epsilon: " << epsilon << " Gamma*Epsilon: " << gamma * epsilon << std::endl;
         std::cout << "Oxygen: " << oxygen << " CO2: " << co2 << " Oxygen*CO2: " << oxygen * co2 << std::endl;
     }
 
     void day4(std::ifstream& file) {
-        std::cout << "------------Day 04------------" << std::endl;
         struct Board {
             uint64_t numbers[25] = {0};
             bool marked[25] = {false};
@@ -214,8 +210,6 @@ namespace AoC {
     }
 
     void day5(std::ifstream& file) {
-        std::cout << "------------Day 05------------" << std::endl;
-
         using coord_t = uint32_t;
 
         // Stores the count with and without diagonals
@@ -299,7 +293,6 @@ namespace AoC {
     }
 
     void day6_old(std::ifstream& file) {
-        std::cout << "------------Day 06------------" << std::endl;
 
         constexpr uint64_t c_simulatedDays = 256;
 
@@ -331,7 +324,6 @@ namespace AoC {
     }
 
     void day7(std::ifstream& file) {
-        std::cout << "------------Day 07------------" << std::endl;
 
         std::vector<int64_t> crabs;
 
@@ -339,14 +331,6 @@ namespace AoC {
         while (std::getline(file, input, ',')) {
             crabs.push_back(std::stoi(input));
         }
-
-        int64_t mean = 0, size = crabs.size();
-        mean = std::accumulate(crabs.cbegin(), crabs.cend(), mean) / size;
-        int64_t counti = std::count_if(crabs.cbegin(), crabs.cend(), [mean](const auto& val) {return val < mean;});
-
-        int64_t part1 = (size - 2 * counti);
-        int64_t point = part1 / (2*size);
-        std::cout << mean << " " << counti << "/" << crabs.size() << " " << point << " " << part1 << std::endl;
 
         int64_t lowestCost = std::numeric_limits<int64_t>::max(), at = 0;
         int64_t lowestCostB = std::numeric_limits<int64_t>::max(), atB = 0;

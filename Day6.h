@@ -37,7 +37,6 @@ namespace AoC {
 
 
     void day6(std::ifstream& file) {
-        std::cout << "------------Day 06------------" << std::endl;
         Matrix<1, 9> input{0, 0, 0, 0, 0, 0, 0, 0, 0};
 
         std::string val;

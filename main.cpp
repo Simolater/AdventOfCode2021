@@ -5,6 +5,7 @@
 #include "Day6.h"
 #include "Day8.h"
 #include "Day9.h"
+#include "Day10.h"
 
 int main(int argv, char** args) {
     if (argv != 3) {
@@ -47,6 +48,9 @@ int main(int argv, char** args) {
             break;
         case 9:
             AoC::day9(file);
+            break;
+        case 10:
+            AoC::day10(file);
             break;
         default:
             std::cout << "Invalid day" << std::endl;

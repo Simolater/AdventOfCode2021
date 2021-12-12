@@ -1,13 +1,7 @@
 #include <iostream>
-#include <fstream>
 #include <string>
-#include "week_one.h"
-#include "Day6.h"
-#include "Day8.h"
-#include "Day9.h"
-#include "Day10.h"
-#include "Day11.h"
-#include "Day12.h"
+#include <fstream>
+#include "AoC.h"
 
 int main(int argv, char** args) {
     if (argv != 3) {
@@ -20,7 +14,6 @@ int main(int argv, char** args) {
         return 2;
     }
     // This could be unsafe but idc
-
     const auto day = std::stoi(args[2]);
     std::cout << "------------Day "<< day <<"------------" << std::endl;
     switch (day) {

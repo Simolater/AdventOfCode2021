@@ -1,9 +1,11 @@
-#include <initializer_list>
-#include <array>
-#include "Matrix.h"
+//
+// Created by Simon on 12/12/2021.
+//
+#include "../Days.h"
+
+constexpr size_t c_day = 6;
 
 namespace AoC {
-
     struct PopulationBase {
         static constexpr Matrix<9, 9> value{
                 0,0,0,0,0,0,1,0,1,
@@ -33,22 +35,22 @@ namespace AoC {
     struct Population<1> {
         static constexpr auto value{PopulationBase::value};
     };
+}
 
+AoC::AoCDay<c_day>::input_t AoC::AoCDay<c_day>::parseInput(std::istream &input) {
+    input_t output{0, 0, 0, 0, 0, 0, 0, 0, 0};
+    for (std::string val; std::getline(input, val, ',');) {
+        ++output(0, std::stoi(val));
+    }
+    return output;
+}
 
+AoC::day_result_t AoC::AoCDay<c_day>::runA(const input_t &input) {
+    constexpr auto mat = Population<80>::value;
+    return (input * mat).sum();
+}
 
-    void day6(std::ifstream& file) {
-        Matrix<1, 9> input{0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-        std::string val;
-        while (std::getline(file, val, ',')) {
-            ++input(0, std::stoi(val));
-        }
-
-        constexpr auto mat_80 = Population<80>::value;
-        constexpr auto mat_256 = Population<256>::value;
-
-        std::cout << "Amount of fish: " << std::endl;
-        std::cout << "After  80 days: " << (input * mat_80).sum() << std::endl;
-        std::cout << "After 256 days: " << (input * mat_256).sum() << std::endl;
-    };
+AoC::day_result_t AoC::AoCDay<c_day>::runB(const input_t &input) {
+    constexpr auto mat = Population<256>::value;
+    return (input * mat).sum();
 }

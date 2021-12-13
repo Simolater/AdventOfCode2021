@@ -1,7 +1,7 @@
 #pragma once
 
 namespace AoC {
-    template<int R, int C, typename val_t = int64_t, typename index_t = int>
+    template<int R, int C, typename val_t = long, typename index_t = int>
     requires (R > 0 && C > 0)
     struct Matrix {
 

@@ -1,62 +1,17 @@
 #include <iostream>
 #include <string>
-#include <fstream>
-#include "AoC.h"
+#include "src/AoC.h"
 
 int main(int argv, char** args) {
     if (argv != 3) {
         std::cout << "Provide an input file and the day!" << std::endl;
         return 1;
     }
-    std::ifstream file(args[1]);
-    if (!file) {
-        std::cout << "Failed to open file!" << std::endl;
-        return 2;
-    }
+    std::filesystem::path inputDirectory(args[1]);
     // This could be unsafe but idc
-    const auto day = std::stoi(args[2]);
-    std::cout << "------------Day "<< day <<"------------" << std::endl;
-    switch (day) {
-        case 1:
-            AoC::day1(file);
-            break;
-        case 2:
-            AoC::day2(file);
-            break;
-        case 3:
-            AoC::day3(file);
-            break;
-        case 4:
-            AoC::day4(file);
-            break;
-        case 5:
-            AoC::day5(file);
-            break;
-        case 6:
-            AoC::day6(file);
-            break;
-        case 7:
-            AoC::day7(file);
-            break;
-        case 8:
-            AoC::day8(file);
-            break;
-        case 9:
-            AoC::day9(file);
-            break;
-        case 10:
-            AoC::day10(file);
-            break;
-        case 11:
-            AoC::day11(file);
-            break;
-        case 12:
-            AoC::day12(file);
-            break;
-        default:
-            std::cout << "Invalid day" << std::endl;
-            break;
-    }
-    file.close();
+    const std::size_t day = std::stoi(args[2]) - 1;
+
+    AoC::run(day, AoC::RunConfig::runAll, inputDirectory);
+
     return 0;
 }

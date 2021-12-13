@@ -3,4 +3,6 @@ project(AdventOfCode)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(AdventOfCode main.cpp Day6.h Day8.h Day9.h Matrix.h AoC.h AoCDay.cpp AoCDay.h)
+file (GLOB day_src "src/impl/*.cpp")
+
+add_executable(AdventOfCode main.cpp Matrix.h AoC.h src/AoCDay.h src/Days.h ${day_src} src/AoC.h)

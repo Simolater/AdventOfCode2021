@@ -9,7 +9,7 @@
 
 namespace AoC {
 
-    constexpr std::size_t NUM_DAYS = 12;
+    constexpr std::size_t NUM_DAYS = 13;
 
     enum RunConfig {
         runA = 0b01,
@@ -36,10 +36,12 @@ namespace AoC {
         auto input = AoCDay<day>::parseInput(file);
 
         if (config & RunConfig::runA) {
-            std::cout << "Part one: " << AoCDay<day>::runA(input) << std::endl;
+            const auto result = AoCDay<day>::runA(input);
+            std::cout << "Part one: " << result << std::endl;
         }
         if (config & RunConfig::runB) {
-            std::cout << "Part two: " << AoCDay<day>::runB(input) << std::endl;
+            const auto result = AoCDay<day>::runB(input);
+            std::cout << "Part two: " << result << std::endl;
         }
     }
 

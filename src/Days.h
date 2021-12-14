@@ -5,6 +5,7 @@
 #include "AoCDay.h"
 #include "../Matrix.h"
 #include <vector>
+#include <set>
 #include <unordered_map>
 
 namespace AoC {
@@ -173,6 +174,24 @@ namespace AoC {
     struct AoCDay<12> {
 
         using input_t = std::unordered_map<std::string, std::vector<std::string>>;
+
+        static input_t parseInput(std::istream& input);
+
+        static day_result_t runA(const input_t& input);
+
+        static day_result_t runB(const input_t& input);
+
+    };
+
+    template <>
+    struct AoCDay<13> {
+
+        using input_points_t = std::set<std::pair<int64_t, int64_t>>;
+
+        struct input_t {
+            input_points_t points;
+            std::vector<std::pair<char8_t, int64_t>> folds;
+        };
 
         static input_t parseInput(std::istream& input);
 

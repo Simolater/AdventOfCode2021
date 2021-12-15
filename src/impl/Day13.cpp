@@ -63,6 +63,7 @@ AoC::day_result_t AoC::AoCDay<c_day>::runB(const input_t &input) {
     for (const auto& foldInst : input.folds) {
         points = std::move(fold(points, foldInst.first, foldInst.second));
     }
+    // For printing the answer, I'm not writing code to parse this
     /*for (auto y = 0; y < 20; ++y) {
         for (auto x = 0; x < 20; ++x) {
             std::cout << (points.contains({x, y}) ? '#' : '.');

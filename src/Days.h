@@ -200,4 +200,30 @@ namespace AoC {
         static day_result_t runB(const input_t& input);
 
     };
+
+    template <>
+    struct AoCDay<14> {
+
+        struct pair_hash
+        {
+            std::size_t operator() (const std::pair<int, int> &pair) const {
+                return std::hash<int>()(pair.first) ^ std::hash<int>()(pair.second);
+            }
+        };
+
+        using charPair = std::pair<char8_t, char8_t>;
+
+        struct input_t {
+            char8_t start, end;
+            std::unordered_map<charPair, int64_t, pair_hash> pairs;
+            std::unordered_map<charPair, char8_t, pair_hash> rules;
+        };
+
+        static input_t parseInput(std::istream& input);
+
+        static day_result_t runA(const input_t& input);
+
+        static day_result_t runB(const input_t& input);
+
+    };
 }

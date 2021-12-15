@@ -226,4 +226,20 @@ namespace AoC {
         static day_result_t runB(const input_t& input);
 
     };
+
+    template <>
+    struct AoCDay<15> {
+
+        struct input_t {
+            int64_t width{0}, height{0};
+            std::vector<int64_t> grid;
+        };
+
+        static input_t parseInput(std::istream& input);
+
+        static day_result_t runA(const input_t& input);
+
+        static day_result_t runB(const input_t& input);
+
+    };
 }

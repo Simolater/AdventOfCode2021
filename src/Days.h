@@ -242,4 +242,23 @@ namespace AoC {
         static day_result_t runB(const input_t& input);
 
     };
+
+    template <>
+    struct AoCDay<16> {
+
+        struct packet {
+            uint8_t version{0}, typeId{0};
+            uint64_t value{0}, size{6};
+            std::vector<packet> subPackets;
+        };
+
+        using input_t = packet;
+
+        static input_t parseInput(std::istream& input);
+
+        static day_result_t runA(const input_t& input);
+
+        static day_result_t runB(const input_t& input);
+
+    };
 }
